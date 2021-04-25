@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>CTODD03 A4</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Assignment 4">
+    <meta name="keywords" content="GPX, Parser, Web">
+    <meta name="author" content="Connor Todd">
+    <!-- Load jquery, bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <!-- Custom CSS End -->
+</head>
+<body>
+    <hr>
+    <div id="blah">Assignment 4 - Connor Todd</div>
+    <hr>
+
+    <!--FILE LOG PANEL-->
+    <div class = "main">
+        <div class="body">
+            <div id = "FileLog">
+                <h3>File Log Panel</h3>
+                <table id = "fileLogData">
+                    <!--*HTML FOR FILE LOG PANEL GETS INJECTED HERE-->
+                </table>
+            </div>
+        </div>
+        <form ref='uploadForm'
+            id='uploadForm'
+            action='/upload'
+            method='post'
+            encType="multipart/form-data">
+            <div class="form-group">
+                <input type="file" name="uploadFile" class="btn btn-secondary">
+                <input type='submit' value='Upload' class="btn btn-secondary">
+            </div>
+        </form>
+        <div id = "GPXView">
+            <h3>GPX View Panel</h3>
+            <div class="body">
+                <table id = GPXViewData>
+                    <tr><th>Component</th><th>Name</th><th>Number of points</th><th>Length</th><th>Loop</th></tr>
+                    <tr><td> No file selected</td><td></td><td></td><td></td><td></td></tr>
+                    <!--*HTML FOR GPX VIEW PANEL GETS INJECTED HERE-->
+                </table>
+            </div>
+            <div class="dropdown">
+                <div class="vpdrop">
+                    <div id="vpbtn">
+                        <button class="dropbtn">Select file</button>
+                    </div>
+                    <div class="dropdown-content">
+                        <div id = "vp-dropdown">
+                            <button onclick="chooseView(name)">simple.gpx</button>
+                            <!-- <a href="#" onclick="chooseView(this)">simple.gpx</a>
+                            <a href="#" onclick="chooseView(this)">Link 2</a>
+                            <a href="#" onclick="chooseView(this)">Link 3</a>-->
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <div class = "space1">
+        </div>
+        <h6>Other Data</h6>
+            <div id="other_data">
+                <!--*OTHER DATA GETS INJECTED HERE-->
+            </div>
+            <div id = "rename_box">
+                <!--*RENAME BOX GETS INJECTED HERE-->
+                <!-- <h6>Rename Selected Route/Track</h6>
+                <form ref='someform'
+                    id='someform'>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="renBox" value="" placeholder="Enter name here">
+                    </div>
+                    <div class="form-group">
+                        <input onclick="renameRadio('test','routtest',1)" type='submit' class="btn btn-secondary">
+                    </div>
+                </form> -->
+            </div>
+            <div id = "addRoute_box">
+                <!--*ADD ROUTE FORM GETS INJECTED HERE-->
+            </div>
+            <div id = "addWayp_box">
+                <!--*ADD WAYPOINT FORM GETS INJECTED HERE-->
+            </div>
+            <div id = "createGPXForm">
+                <h3>Create GPX File</h3>
+                <form ref='gpxForm'
+                    id='gpxForm'>
+                    <div class="gpx-form">
+                        <input type="text" class="gpx-fileName" id="gpxBox1" value="" placeholder="File Name">
+                        <input type="text" class="path-ceator" id="gpxBox2" value="" placeholder="Creator">
+                    </div>
+                    <div class="gpx-form">
+                        <input onclick="createGPXFile()" type='submit' class="btn btn-secondary">
+                    </div>
+                </form>
+            </div>
+            <div id = "FindPath">
+                <h3>Find Path (Routes/Tracks Between Points)</h3>
+                <div class="body">
+                    <table id = FindPathTable>
+                        <tr><th>Component</th><th>Name</th><th>Number of points</th><th>Length</th><th>Loop</th></tr>
+                        <tr><td>No paths</td><td></td><td></td><td></td><td></td></tr>
+                        <!--*HTML FOR PATH VIEW PANEL INJECTED HERE-->
+                    </table>
+                </div>
+                <form ref='pathForm'
+                    id='pathForm'>
+                    <div class="path-form">
+                        <input type="text" class="path-p1_lat" id="pathBox1" value="" placeholder="Point 1 Latitude">
+                        <input type="text" class="path-p1_lon" id="pathBox2" value="" placeholder="Point 1 Longitude">
+                        <input type="text" class="path-p2_lat" id="pathBox3" value="" placeholder="Point 2 Latitude">
+                        <input type="text" class="path-p2_lon" id="pathBox4" value="" placeholder="Point 2 Longitude">
+                        <input type="text" class="path-delta" id="pathBox5" value="" placeholder="Delta">
+                    </div>
+                    <div class="path-form">
+                        <input onclick="updatePaths()" type='submit' class="btn btn-secondary">
+                    </div>
+                </form>
+            </div>
+    </div>
+    <h3>Assignment 4</h3>
+    <h3>------------------</h3>
+    <h3>Database Login</h3>
+    <div id = "DB-Login">
+        <form ref='loginForm' id='loginForm'>
+            <div class="container">
+                <label for="dbname"><b>DB Name</b></label>
+                <input type="text" id="loginBox1" value="ctodd03" placeholder="Enter DB Name" name="dbname" required>
+                <!--*REMEMBER TO REMOVE HARCODE VALUES-->
+                <label for="uname"><b>Username</b></label>
+                <input type="text" id="loginBox2" value="ctodd03" placeholder="Enter Username" name="uname" required>
+          
+                <label for="psw"><b>Password</b></label>
+                <input type="password" id="loginBox3" value="1039174" placeholder="Enter Password" name="psw" required>
+            
+                <button onclick="loginDB()" type="submit">Login</button>
+            </div>
+        </form>
+    </div>
+    <div id = "DB-UI">
+        <h3>Database UI</h3>
+        <button id ='storeFiles' onclick="storeFilesDB()" type="submit">Store All Files</button>
+        <button id ='clearData' onclick="clearDataDB()" type="submit">Clear All Data</button>
+        <button id ='displayStat' onclick="displayDBStat()" type="submit">Display DB Status</button>
+    </div>
+</body>
+
+ <!-- Leave me at the bottom of body -->
+ <script src="/index.js"></script>
+</html>
